@@ -11,7 +11,8 @@ function App() {
         if (buttonPressed === 'upload') {
             setUploadedImage(true);
         } else {
-            const response = await axios.post('http://localhost:8000/identify', {
+            console.log(process.env.REACT_APP_BACKEND_URL)
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}`, {
                 image: 'image'
             })
             console.log(response);
