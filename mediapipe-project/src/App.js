@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, use } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './App.css';
 import {
     ObjectDetector,
@@ -10,7 +10,9 @@ function App() {
     const [img, setImg] = useState(null);
     const [objectDetector, setObjectDetector] = useState(null);
     const [detectionResults, setDetectionResults] = useState({});
+    const [boundingBox, setBoundingBox] = useState({});
     const imageRef = useRef(null);
+    const highlightRef = useRef(null);
 
 
     useEffect(() => {
@@ -47,22 +49,29 @@ function App() {
          }
 
         try {
-            const detectionResults = objectDetector.detect(imageRef.current);
-            console.log(detectionResults.detections[0].categories[0].categoryName)
-            setDetectionResults(
-                {
-                    detected: `${detectionResults.detections[0].categories[0].categoryName}`,
-                    confidence: `${Math.round(detectionResults.detections[0].categories[0].score * 100)}`
-                }
+           const detectionResults = objectDetector.detect(imageRef.current);
+             setDetectionResults(
+                 {
+                     detected: `${detectionResults.detections[0].categories[0].categoryName}`,
+                     confidence: `${(detectionResults.detections[0].categories[0].score * 100).toFixed(2)}`
+                 }
             )
+            setBoundingBox(detectionResults.detections[0].boundingBox)
         } catch (err) {
             console.log('Error during detection: ', err)
         }
     }
 
-    useEffect(() => {
-        console.log(detectionResults)
-    }, [detectionResults])
+      useEffect(() => {
+          if (highlightRef.current && boundingBox && Object.keys(boundingBox).length > 0 && imageRef.current) {
+              const ratio = imageRef.current.height / imageRef.current.naturalHeight;
+              highlightRef.current.style.left = boundingBox.originX * ratio + 'px';
+              highlightRef.current.style.top = boundingBox.originY * ratio + 'px';
+              highlightRef.current.style.width = boundingBox.width * ratio + 'px';
+              highlightRef.current.style.height = boundingBox.height * ratio + 'px';
+          }
+
+      }, [boundingBox])
 
     const uploadImg = e => {
         setUploadedImage(true);
@@ -81,12 +90,13 @@ function App() {
         <div className='App'>
             <main className='grid'>
                 <div id='top-half' className='h-80'>
-                    <div id='img-container flex'>
+                    <div id='img-container relative flex justify-center max-w-full'>
                         {uploadedImage ? (
-                            <img ref={imageRef} src={img} alt='Uploaded by user' className='min-h-72 max-h-72 mx-auto'/>
+                            <img ref={imageRef} src={img} alt='Uploaded by user' className='min-h-72 max-h-72'/>
                         ) : (
                             null
                         )}
+                         <div className='highlighter' ref={highlightRef}></div>
                     </div>
                     <form onSubmit={(e) => identifyImage(e)} className='mt-8'>
                         <input type='file' onChange={(e) => uploadImg(e)} accept='image/*'/>
