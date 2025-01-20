@@ -76,6 +76,7 @@ function App() {
     }, [boundingBox])
 
     const uploadImg = e => {
+        setBoundingBox({})
         setUploadedImage(true);
         const file = e.target.files[0];
 
@@ -109,15 +110,19 @@ function App() {
                 </div>
                 <div id='bottom-half' className='my-40'>
                     <div id='results'>
-                        {!detectionResults.error ? (
+                        {detectionResults.detected ? (
                             <div>
                                 <h1>Detected: <span>{detectionResults.detected}</span></h1>
                                 <h1>Confidence: <span>{detectionResults.confidence }%</span></h1>
                             </div>
                         ) : (
-                            <div>
-                                <h1>{detectionResults.error}</h1>
-                            </div>
+                            detectionResults.error ? (
+                                <div>
+                                    <h1>{detectionResults.error}</h1>
+                                </div>
+                            ) : (
+                                <h1>Upload an image and press identify to have your image examined.</h1>
+                            )
                         )}
                     </div>
                 </div>
