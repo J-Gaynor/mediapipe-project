@@ -89,22 +89,18 @@ function App() {
     return (
         <div className='App'>
             <main className='grid'>
-                <div id='top-half' className='h-80'>
+                <div id='top-half' className='h-80 flex flex-col'>
                     <div className='img-container relative flex justify-center max-w-full'>
                         {uploadedImage ? (
                             <div className='img-container relative flex justify-center max-w-full'>
-                                <img ref={imageRef} src={img} alt='Uploaded by user' className='min-h-72 max-h-72'/>
+                                <img ref={imageRef} src={img} alt='Uploaded by user' className='min-h-64 max-h-64'/>
                                 {boundingBox.originX ? 
                                     <div className='highlighter absolute' ref={highlightRef}></div>
-                                : (
-                                    null
-                                )}
+                                : null}
                             </div>
-                        ) : (
-                            null
-                        )}
+                        ) : null}
                     </div>
-                    <form onSubmit={(e) => identifyImage(e)} className='mt-8'>
+                    <form onSubmit={(e) => identifyImage(e)} className='mt-auto'>
                         <input type='file' onChange={(e) => uploadImg(e)} accept='image/*'/>
                         <button disabled={!uploadedImage} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>Identify</button>
                     </form>
