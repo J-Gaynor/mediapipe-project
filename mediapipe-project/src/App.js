@@ -77,6 +77,7 @@ function App() {
 
     const uploadImg = e => {
         setBoundingBox({})
+        setDetectionResults({})
         setUploadedImage(true);
         const file = e.target.files[0];
 
