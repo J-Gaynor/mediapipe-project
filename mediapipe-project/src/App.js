@@ -58,7 +58,9 @@ function App() {
             )
             setBoundingBox(detectionResults.detections[0].boundingBox)
         } catch (err) {
-            console.log('Error during detection: ', err)
+            setDetectionResults({
+                error: 'Unable to identify image'
+            });
         }
     }
 
@@ -107,13 +109,15 @@ function App() {
                 </div>
                 <div id='bottom-half' className='my-40'>
                     <div id='results'>
-                        {detectionResults ? (
+                        {!detectionResults.error ? (
                             <div>
                                 <h1>Detected: <span>{detectionResults.detected}</span></h1>
                                 <h1>Confidence: <span>{detectionResults.confidence }%</span></h1>
                             </div>
                         ) : (
-                            null
+                            <div>
+                                <h1>{detectionResults.error}</h1>
+                            </div>
                         )}
                     </div>
                 </div>
