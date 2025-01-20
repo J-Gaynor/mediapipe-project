@@ -62,16 +62,16 @@ function App() {
         }
     }
 
-      useEffect(() => {
-          if (highlightRef.current && boundingBox && Object.keys(boundingBox).length > 0 && imageRef.current) {
-              const ratio = imageRef.current.height / imageRef.current.naturalHeight;
-              highlightRef.current.style.left = boundingBox.originX * ratio + 'px';
-              highlightRef.current.style.top = boundingBox.originY * ratio + 'px';
-              highlightRef.current.style.width = boundingBox.width * ratio + 'px';
-              highlightRef.current.style.height = boundingBox.height * ratio + 'px';
-          }
+    useEffect(() => {
+        if (highlightRef.current && boundingBox && Object.keys(boundingBox).length > 0 && imageRef.current) {
+            const ratio = imageRef.current.height / imageRef.current.naturalHeight;
+            highlightRef.current.style.left = boundingBox.originX * ratio + 'px';
+            highlightRef.current.style.top = boundingBox.originY * ratio + 'px';
+            highlightRef.current.style.width = boundingBox.width * ratio + 'px';
+            highlightRef.current.style.height = boundingBox.height * ratio + 'px';
+        }
 
-      }, [boundingBox])
+    }, [boundingBox])
 
     const uploadImg = e => {
         setUploadedImage(true);
@@ -90,13 +90,19 @@ function App() {
         <div className='App'>
             <main className='grid'>
                 <div id='top-half' className='h-80'>
-                    <div id='img-container relative flex justify-center max-w-full'>
+                    <div className='img-container relative flex justify-center max-w-full'>
                         {uploadedImage ? (
-                            <img ref={imageRef} src={img} alt='Uploaded by user' className='min-h-72 max-h-72'/>
+                            <div className='img-container relative flex justify-center max-w-full'>
+                                <img ref={imageRef} src={img} alt='Uploaded by user' className='min-h-72 max-h-72'/>
+                                {boundingBox.originX ? 
+                                    <div className='highlighter absolute' ref={highlightRef}></div>
+                                : (
+                                    null
+                                )}
+                            </div>
                         ) : (
                             null
                         )}
-                         <div className='highlighter' ref={highlightRef}></div>
                     </div>
                     <form onSubmit={(e) => identifyImage(e)} className='mt-8'>
                         <input type='file' onChange={(e) => uploadImg(e)} accept='image/*'/>
