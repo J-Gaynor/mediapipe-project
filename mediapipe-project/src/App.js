@@ -1,9 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import './App.css';
-import {
-    ObjectDetector,
-    FilesetResolver,
-} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.2";
+import { ObjectDetector, FilesetResolver } from "@mediapipe/tasks-vision";
 
 function App() {
     const [uploadedImage, setUploadedImage] = useState(false);
