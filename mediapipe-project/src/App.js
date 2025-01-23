@@ -90,7 +90,7 @@ function App() {
     return (
         <div className='App'>
             <main className='grid'>
-                <div id='top-half' className='h-80 flex flex-col'>
+                <div id='top-half' className='h-80 flex flex-col my-4'>
                     <div className='img-container relative flex justify-center max-w-full'>
                         {uploadedImage ? (
                             <div className='img-container relative flex justify-center max-w-full'>
